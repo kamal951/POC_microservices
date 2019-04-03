@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Mcommerce</title>
+
+    <link rel="stylesheet" type="text/css"
+          href="http://localhost:8888/webjars/bootstrap/4.0.0-2/css/bootstrap.min.css"/>
+
+</head>
+<body>
+
+
+<div class="container">
+
+    <h1 class="text-center">Micro-commerce Application</h1>
+
+    <div class="row">
+        <div class="col-md-4 mx-auto mt-5 text-center">
+
+            <p>
+                Here the user select the payment method and enter the informations on his bank card.<br/>
+                To avoid adding a form and keep the application as most basic and simple as we can for the next steps.<br/>
+            </p>
+
+            <!-- We pass the order id AND the amount so the controller have all needed informations to call payment microservice -->
+            <p>
+                <a th:href="@{|/pay-order/${order.id}/${amount}|}" class="font-weight-bold">Paye My Order</a>
+            </p>
+
+
+
+        </div>
+    </div>
+
+</div>
+
+
+<script type="text/javascript" src="http://localhost:8888/webjars/bootstrap/4.0.0-2/js/bootstrap.min.js"></script>
+
+</body>
+</html>
