@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: microservice-payment
+  jpa:
+    show-sql: true
+  h2:
+    console:
+      enabled: true
+  datasource:
+    sql-script-encoding: UTF-8
+
+server:
+  port: 9003
+
+
+#Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9102/eureka/

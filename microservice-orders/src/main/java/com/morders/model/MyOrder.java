@@ -4,7 +4,9 @@ package com.morders.model;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.TimeZone;
 
 /*
 *  This class is named MyOrder because the h2 database will return errors if we call it Order (it cannot do the difference with the "order" keyword)
@@ -77,12 +79,30 @@ public class MyOrder {
 
     @Override
     public String toString() {
-        return "order{" +
-                "id=" + id +
-                ", productId=" + productId +
-                ", dateOrder=" + dateOrder +
-                ", quantity=" + quantity +
-                ", orderPayed=" + orderPayed +
-                '}';
+        SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+        dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+        //Local time zone
+        SimpleDateFormat dateFormatLocal = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
+        //Time in GMT
+        try{
+            dateFormatLocal.parse( dateFormatGmt.format(dateOrder));
+        }catch(Exception e){
+            System.err.println(e);
+        }
+
+        try{
+            return "order{" +
+                    "id=" + id +
+                    ", productId=" + productId +
+                    ", dateOrder=" +  dateFormatLocal.parse( dateFormatGmt.format(dateOrder)) +
+                    ", quantity=" + quantity +
+                    ", orderPayed=" + orderPayed +
+                    '}';
+        }catch(Exception e){
+            return null;
+        }
+
     }
 }

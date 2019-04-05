@@ -1,32 +1,51 @@
 package com.mpayment;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.tomakehurst.wiremock.junit.WireMockClassRule;
+import com.mpayment.beans.OrderBean;
+import com.mpayment.dao.PaymentDao;
 import com.mpayment.model.Payment;
+import com.mpayment.proxies.MicroserviceOrderProxy;
 import com.mpayment.web.controller.PaymentController;
-import io.specto.hoverfly.junit.core.SimulationSource;
-import io.specto.hoverfly.junit.dsl.HoverflyDsl;
-import io.specto.hoverfly.junit.dsl.HttpBodyConverter;
-import io.specto.hoverfly.junit.dsl.ResponseCreators;
-import io.specto.hoverfly.junit.rule.HoverflyRule;
+import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.client.RestTemplate;
 
 import javax.ws.rs.core.MediaType;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Optional;
+import java.util.TimeZone;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
+import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
+import static com.github.tomakehurst.wiremock.client.WireMock.get;
+import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
+import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
+
 
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest
 public class MpaymentApplicationTests {
+
+	private PaymentController controller;
+
+	@Mock
+	private MicroserviceOrderProxy microserviceOrderProxy;
 
 	@Autowired
 	private MockMvc mvc;
@@ -34,23 +53,17 @@ public class MpaymentApplicationTests {
 	@Autowired
 	private ObjectMapper objectMapper;
 
-	@Autowired
-	private PaymentController paymentController;
 
-//	@Autowired
-//	private RestTemplate restTemplate;
+	@Before
+	public void setUp() {
+		MockitoAnnotations.initMocks(this);
 
+		controller = new PaymentController(microserviceOrderProxy);
+	}
 
 	@Test
 	public void contextLoads() {
 	}
-
-//	public static final HoverflyRule rule
-//			= HoverflyRule.inSimulationMode(SimulationSource.dsl(
-//			HoverflyDsl.service("http://localhost:9002")
-//					.get("/orders/2")
-//					.willReturn(ResponseCreators.success().body(
-//							HttpBodyConverter.jsonWithSingleQuotes("{\"id\": 2,\"productId\": null,\"dateOrder\": \"2019-03-27T13:40:45.419+0000\",\"quantity\": 1,\"orderPayed\": false}")))));
 
 	@Test
 	public void unitTest() throws Exception{
@@ -58,20 +71,41 @@ public class MpaymentApplicationTests {
 		 *  We test the creation of a payment (we verify that the HTTP status is 201 - Created)
 		 */
 		Payment payment = new Payment(1,2,10.0,1451254786932563L);
-//
-//		System.out.println(paymentController.payAnOrder(payment));
 
-		// POST request to /orders with the order we want to update
+		Date dt = new Date();
 
-		this.mvc.perform(post("/orders")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content("{\"id\": 2,\"productId\": null,\"dateOrder\": \"2019-03-27T13:40:45.419+0000\",\"quantity\": 1,\"orderPayed\": false}"))
-				.andExpect(status().isCreated());
+		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+		dateFormatGmt.setTimeZone(TimeZone.getTimeZone("GMT"));
+
+		//Local time zone
+		SimpleDateFormat dateFormatLocal = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
+
+		//Time in GMT
+		dateFormatLocal.parse( dateFormatGmt.format(dt) );
+
+		OrderBean orderBean = new OrderBean();
+		orderBean.setId(2);
+		orderBean.setDateOrder(dateFormatLocal.parse( dateFormatGmt.format(dt) ));
+		orderBean.setOrderPayed(false);
+		orderBean.setQuantity(1);
+		orderBean.setProductId(null);
+
+		Mockito.when(microserviceOrderProxy.retrieveOneOrder(2)).thenReturn(Optional.of(orderBean));
+
+		controller.payAnOrder(payment);
+//		this.mvc.perform(post("/orders")
+//				.contentType(MediaType.APPLICATION_JSON)
+//				.content("{\"id\": 2,\"productId\": null,\"dateOrder\": \"2019-03-27T13:40:45.419+0000\",\"quantity\": 1,\"orderPayed\": false}"))
+//				.andExpect(status().isCreated());
 //
-		this.mvc.perform(post("/payment")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(objectMapper.writeValueAsString(payment)))
-				.andExpect(status().isCreated());
+//		stubFor(get(urlEqualTo("/orders/2")).willReturn(aResponse()
+//				.withHeader("Content-Type", "application/json")
+//				.withBody("{\"id\": 2,\"productId\": null,\"dateOrder\": \"2019-03-27T13:40:45.419+0000\",\"quantity\": 1,\"orderPayed\": false}")));
+
+//		this.mvc.perform(post("/payment")
+//				.contentType(MediaType.APPLICATION_JSON)
+//				.content(objectMapper.writeValueAsString(payment)))
+//				.andExpect(status().isCreated());
 	}
 
 }

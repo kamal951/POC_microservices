@@ -68,10 +68,11 @@
 		</dependency>
 
 		<dependency>
-			<groupId>io.specto</groupId>
-			<artifactId>hoverfly-java</artifactId>
-			<version>0.8.1</version>
+			<groupId>com.github.tomakehurst</groupId>
+			<artifactId>wiremock-standalone</artifactId>
+			<scope>test</scope>
 		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>
@@ -91,39 +92,6 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
-
-			<plugin>
-				<groupId>com.bazaarvoice.maven.plugins</groupId>
-				<artifactId>process-exec-maven-plugin</artifactId>
-				<version>0.7</version>
-				<executions>
-					<execution>
-						<id>switchboard-process</id>
-						<phase>pre-integration-test</phase>
-						<goals>
-							<goal>start</goal>
-						</goals>
-						<configuration>
-							<name>accounts-service</name>
-							<workingDir>/../../micro-service</workingDir>
-							<waitForInterrupt>false</waitForInterrupt>
-							<arguments>
-								<argument>java</argument>
-								<argument>-jar</argument>
-								<argument>${basedir}/../microservice-orders/target/morders-0.0.1-SNAPSHOT.jar</argument>
-							</arguments>
-						</configuration>
-					</execution>
-					<!--Stop all processes in reverse order-->
-					<execution>
-						<id>stop-all</id>
-						<phase>post-integration-test</phase>
-						<goals>
-							<goal>stop-all</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 		</plugins>
 	</build>

@@ -1,0 +1,16 @@
+spring:
+  application:
+    name: microservice-clientui
+
+server:
+  port: 8888
+  error:
+    whitelabel:
+      enabled: false
+    include-stacktrace: always
+
+#Eureka
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:9102/eureka/
