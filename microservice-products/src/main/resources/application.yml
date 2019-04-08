@@ -1,17 +1,10 @@
-spring.application.name=microservice-products
-#
-# management.endpoints.web.exposure.include=*
-#
-# info.app.version=1.0-Beta
-#
-# spring.cloud.config.uri=http://localhost:9101
-#
-# eureka.instance.health-check-url-path= /actuator/health
 server:
   port: 9005
 
 #Configurations H2
 spring:
+  application:
+    name: microservice-products
   jpa:
     show-sql: true
   h2:

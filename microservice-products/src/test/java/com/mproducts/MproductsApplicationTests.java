@@ -16,14 +16,17 @@ import java.util.*;
 public class MproductsApplicationTests {
 
 	@Autowired
-	ProductController productCtrler = new ProductController();
+	private ProductController productCtrler;
 
 	@Test
 	public void contextLoads() {
 	}
 
+	/*
+	*  Unit Tests
+	* */
 	@Test
-	public void unitTestProducts(){
+	public void listOfProductsTest(){
 		// Preparing expected list
 		Product candle = new Product(0,"Candle working with fire", "Candle working like a bulb but without electricity", "file:///images/candle.jpg", 22.0);
 		Product chair = new Product(1,"Chair to sit down", "Rare chair with 4 chair legs", "file:///images/chair.jpg", 95.0);
@@ -36,6 +39,15 @@ public class MproductsApplicationTests {
 		// Testing list of all products method
 		List<Product> list = productCtrler.listOfProducts();
 		Assert.assertEquals(list.toString(), expectedList.toString());
+	}
+
+
+	@Test
+	public void getOneProductTest(){
+		// Preparing expected list
+		Product chair = new Product(1,"Chair to sit down", "Rare chair with 4 chair legs", "file:///images/chair.jpg", 95.0);
+		List<Product> expectedList = new ArrayList();
+		expectedList.add(chair);
 
 		// Testing get one product method
 		Optional<Product> prdct = productCtrler.getOneProduct(1);

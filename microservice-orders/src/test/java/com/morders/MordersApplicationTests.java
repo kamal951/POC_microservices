@@ -36,6 +36,9 @@ public class MordersApplicationTests {
 	public void contextLoads() {
 	}
 
+	/*
+	*  Unit Tests
+	* */
 	@Test
 	public void addOrderTest()  throws Exception{
 
