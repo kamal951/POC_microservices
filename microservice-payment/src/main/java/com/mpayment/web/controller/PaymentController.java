@@ -16,11 +16,16 @@ import java.util.Optional;
 @RestController
 public class PaymentController {
 
-    @Autowired
+//    @Autowired
     private PaymentDao paymentDao;
 
-    @Autowired
+//    @Autowired
     private MicroserviceOrderProxy microserviceOrderProxy;
+
+    public PaymentController(MicroserviceOrderProxy microserviceOrderProxy, PaymentDao paymentDao){
+        this.microserviceOrderProxy = microserviceOrderProxy;
+        this.paymentDao = paymentDao;
+    }
 
     /*
      *  Operations to save a payment and notify the orders microservice to update the status of the sayed oreder
@@ -28,7 +33,7 @@ public class PaymentController {
     @PostMapping(value = "/payment")
     public ResponseEntity<Payment>  payAnOrder(@RequestBody Payment payment){
 
-        // We verify if theorder has been already payed
+        // We verify if the order has been already payed
         Payment existingPayment = paymentDao.findByidOrder(payment.getIdOrder());
         if(existingPayment != null) throw new ExistingPaymentException("This order has already been payed!");
 

@@ -17,6 +17,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -37,15 +38,22 @@ import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.assertj.core.api.Assertions.assertThat;
 
 
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.when;
+
+
 @RunWith(SpringRunner.class)
 @AutoConfigureMockMvc
 @SpringBootTest
 public class MpaymentApplicationTests {
 
-	private PaymentController controller;
-
 	@Mock
 	private MicroserviceOrderProxy microserviceOrderProxy;
+
+	@Mock
+	private PaymentDao paymentDao;
+
+	private PaymentController controller;
 
 	@Autowired
 	private MockMvc mvc;
@@ -53,12 +61,13 @@ public class MpaymentApplicationTests {
 	@Autowired
 	private ObjectMapper objectMapper;
 
+	@MockBean
+	private OrderBean orderBean;
 
 	@Before
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
-
-		controller = new PaymentController(microserviceOrderProxy);
+		controller = new PaymentController(microserviceOrderProxy, paymentDao);
 	}
 
 	@Test
@@ -70,8 +79,8 @@ public class MpaymentApplicationTests {
 		/*
 		 *  We test the creation of a payment (we verify that the HTTP status is 201 - Created)
 		 */
-		Payment payment = new Payment(1,2,10.0,1451254786932563L);
 
+		// We create a fake payment and order
 		Date dt = new Date();
 
 		SimpleDateFormat dateFormatGmt = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ");
@@ -90,22 +99,19 @@ public class MpaymentApplicationTests {
 		orderBean.setQuantity(1);
 		orderBean.setProductId(null);
 
-		Mockito.when(microserviceOrderProxy.retrieveOneOrder(2)).thenReturn(Optional.of(orderBean));
+		Payment payment = new Payment(1,20,10.0,1451254786932563L);
+
+		// We mock the call to the method that see if a payment exist
+		Mockito.when(paymentDao.findByidOrder(payment.getIdOrder())).thenReturn(null);
+
+		// We mock the saving of the order
+		Mockito.when(paymentDao.save(payment)).thenReturn(payment);
+
+		// We mock the call to orders microservice to update the payment status of the order
+		Mockito.when(microserviceOrderProxy.retrieveOneOrder(payment.getIdOrder())).thenReturn(Optional.of(orderBean));
 
 		controller.payAnOrder(payment);
-//		this.mvc.perform(post("/orders")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.content("{\"id\": 2,\"productId\": null,\"dateOrder\": \"2019-03-27T13:40:45.419+0000\",\"quantity\": 1,\"orderPayed\": false}"))
-//				.andExpect(status().isCreated());
-//
-//		stubFor(get(urlEqualTo("/orders/2")).willReturn(aResponse()
-//				.withHeader("Content-Type", "application/json")
-//				.withBody("{\"id\": 2,\"productId\": null,\"dateOrder\": \"2019-03-27T13:40:45.419+0000\",\"quantity\": 1,\"orderPayed\": false}")));
 
-//		this.mvc.perform(post("/payment")
-//				.contentType(MediaType.APPLICATION_JSON)
-//				.content(objectMapper.writeValueAsString(payment)))
-//				.andExpect(status().isCreated());
 	}
 
 }

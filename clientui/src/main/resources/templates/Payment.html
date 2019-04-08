@@ -18,13 +18,13 @@
         <div class="col-md-4 mx-auto mt-5 text-center">
 
             <p>
-                Here the user select the payment method and enter the informations on his bank card.<br/>
+                Here the user select the payment method and enter the information of his bank card.<br/>
                 To avoid adding a form and keep the application as most basic and simple as we can for the next steps.<br/>
             </p>
 
             <!-- We pass the order id AND the amount so the controller have all needed informations to call payment microservice -->
             <p>
-                <a th:href="@{|/pay-order/${order.id}/${amount}|}" class="font-weight-bold">Paye My Order</a>
+                <a th:href="@{|/pay-order/${order.id}/${amount}|}" class="font-weight-bold">Pay My Order</a>
             </p>
 
 
