@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -75,7 +77,7 @@ public class MpaymentApplicationTests {
 	}
 
 	@Test
-	public void unitTest() throws Exception{
+	public void payAnOrderTest() throws Exception{
 		/*
 		 *  We test the creation of a payment (we verify that the HTTP status is 201 - Created)
 		 */
@@ -110,7 +112,8 @@ public class MpaymentApplicationTests {
 		// We mock the call to orders microservice to update the payment status of the order
 		Mockito.when(microserviceOrderProxy.retrieveOneOrder(payment.getIdOrder())).thenReturn(Optional.of(orderBean));
 
-		controller.payAnOrder(payment);
+		// We call the method to test it
+		assertEquals(new ResponseEntity<Payment>(payment, HttpStatus.CREATED), controller.payAnOrder(payment));
 
 	}
 

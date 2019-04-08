@@ -28,9 +28,9 @@ public class MproductsApplicationTests {
 	@Test
 	public void listOfProductsTest(){
 		// Preparing expected list
-		Product candle = new Product(0,"Candle working with fire", "Candle working like a bulb but without electricity", "file:///images/candle.jpg", 22.0);
-		Product chair = new Product(1,"Chair to sit down", "Rare chair with 4 chair legs", "file:///images/chair.jpg", 95.0);
-		Product horse = new Product(2,"Wooden horse", "Wooden horse", "file:///images/horse.jpg", 360.0);
+		Product candle = new Product(0,"Candle working with fire", "Candle working like a bulb but without electricity", "https://live.staticflickr.com/3408/3279558099_6dc30be4b6_b.jpg", 22.0);
+		Product chair = new Product(1,"Chair to sit down", "Rare chair with 4 chair legs", "https://live.staticflickr.com/1012/819236264_dc25b04576_z.jpg", 95.0);
+		Product horse = new Product(2,"Wooden horse", "Wooden horse", "https://live.staticflickr.com/208/466183052_0d6f7e424c_b.jpg", 360.0);
 		List<Product> expectedList = new ArrayList();
 		expectedList.add(candle);
 		expectedList.add(chair);
