@@ -16,10 +16,9 @@ import java.util.Optional;
 @RestController
 public class PaymentController {
 
-//    @Autowired
+    
     private PaymentDao paymentDao;
 
-//    @Autowired
     private MicroserviceOrderProxy microserviceOrderProxy;
 
     public PaymentController(MicroserviceOrderProxy microserviceOrderProxy, PaymentDao paymentDao){
