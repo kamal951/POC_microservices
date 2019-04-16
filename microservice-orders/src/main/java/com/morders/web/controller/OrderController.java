@@ -16,9 +16,11 @@ import java.util.Optional;
 @RestController
 public class OrderController {
 
-    @Autowired
-    OrdersDao ordersDao;
+    private OrdersDao ordersDao;
 
+    public OrderController(OrdersDao ordersDao){
+        this.ordersDao = ordersDao;
+    }
     /*
      * We configure a POST request to add an order
     */
@@ -26,6 +28,7 @@ public class OrderController {
     public ResponseEntity<MyOrder> addOrder(@RequestBody MyOrder order){
         MyOrder newOrder = ordersDao.save(order);
         if(newOrder == null) throw new ImpossibleToAddOrderException("Impossible to add this order");
+
         return new ResponseEntity<MyOrder>(order, HttpStatus.CREATED);
     }
 
@@ -56,6 +59,7 @@ public class OrderController {
     **/
     @PutMapping(value = "/orders")
     public void updateOrder(@RequestBody MyOrder order) {
+        System.out.println(order);
         ordersDao.save(order);
     }
 }

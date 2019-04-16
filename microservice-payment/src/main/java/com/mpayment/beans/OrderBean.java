@@ -14,7 +14,12 @@ public class OrderBean {
 
     private Boolean orderPayed;
 
-    public OrderBean() {
+    public OrderBean(int id, Integer productId, Date dateOrder,  Integer quantity, Boolean orderPayed) {
+        this.id = id;
+        this.productId = productId;
+        this.dateOrder = dateOrder;
+        this.quantity = quantity;
+        this.orderPayed = orderPayed;
     }
 
     public int getId() {

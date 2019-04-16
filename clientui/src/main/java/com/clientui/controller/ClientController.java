@@ -23,16 +23,15 @@ import java.util.concurrent.ThreadLocalRandom;
 @Controller
 public class ClientController {
 
-    @Autowired
-    private MicroserviceProductsProxy ProductsProxy;
-
-    @Autowired
-    private MicroserviceOrderProxy OrderProxy;
-
-    @Autowired
+    private MicroserviceProductsProxy productsProxy;
+    private MicroserviceOrderProxy orderProxy;
     private MicroservicePaymentProxy paymentProxy;
 
-
+    public ClientController(MicroserviceProductsProxy productsProxy, MicroserviceOrderProxy orderProxy, MicroservicePaymentProxy paymentProxy) {
+        this.productsProxy = productsProxy;
+        this.orderProxy = orderProxy;
+        this.paymentProxy = paymentProxy;
+    }
 
     Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -47,7 +46,7 @@ public class ClientController {
 
         log.info("Send request to microservice-products");
 
-        List<ProductBean> products =  ProductsProxy.listOfProducts();
+        List<ProductBean> products =  productsProxy.listOfProducts();
 
         model.addAttribute("products", products);
 
@@ -62,7 +61,7 @@ public class ClientController {
     @RequestMapping("/details-products/{id}")
     public String productDetails(@PathVariable int id,  Model model){
 
-        ProductBean product = ProductsProxy.retrieveOneProduct(id);
+        ProductBean product = productsProxy.retrieveOneProduct(id);
 
         model.addAttribute("product", product);
 
@@ -86,7 +85,7 @@ public class ClientController {
 
 
         // We call orders microservice with Feign and we get the details of the created order, especially its ID (step 4)
-        OrderBean orderAdded = OrderProxy.addOrder(order);
+        OrderBean orderAdded = orderProxy.addOrder(order);
 
         // We pass the object order to the view and its amount to have the needed data for the payment
         model.addAttribute("order", orderAdded);

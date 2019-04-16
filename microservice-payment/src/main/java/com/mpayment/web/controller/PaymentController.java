@@ -16,14 +16,14 @@ import java.util.Optional;
 @RestController
 public class PaymentController {
 
-    
+
     private PaymentDao paymentDao;
 
     private MicroserviceOrderProxy microserviceOrderProxy;
 
-    public PaymentController(MicroserviceOrderProxy microserviceOrderProxy, PaymentDao paymentDao){
-        this.microserviceOrderProxy = microserviceOrderProxy;
-        this.paymentDao = paymentDao;
+    public PaymentController(MicroserviceOrderProxy m, PaymentDao p){
+        this.microserviceOrderProxy = m;
+        this.paymentDao = p;
     }
 
     /*
@@ -31,7 +31,6 @@ public class PaymentController {
      **/
     @PostMapping(value = "/payment")
     public ResponseEntity<Payment>  payAnOrder(@RequestBody Payment payment){
-
         // We verify if the order has been already payed
         Payment existingPayment = paymentDao.findByidOrder(payment.getIdOrder());
         if(existingPayment != null) throw new ExistingPaymentException("This order has already been payed!");

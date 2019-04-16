@@ -2,6 +2,7 @@ package com.mproducts;
 
 import com.mproducts.model.Product;
 import com.mproducts.web.controller.ProductController;
+import com.mproducts.web.exceptions.ProductNotFoundException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -9,22 +10,18 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class MproductsApplicationTests {
+public class ProductControllerUnitTests {
 
 	@Autowired
 	private ProductController productCtrler;
 
-	@Test
-	public void contextLoads() {
-	}
-
-	/*
-	*  Unit Tests
-	* */
+	// test the method that get the list of all products
 	@Test
 	public void listOfProductsTest(){
 		// Preparing expected list
@@ -36,16 +33,17 @@ public class MproductsApplicationTests {
 		expectedList.add(chair);
 		expectedList.add(horse);
 
-		// Testing list of all products method
-		List<Product> list = productCtrler.listOfProducts();
-		Assert.assertEquals(list.toString(), expectedList.toString());
+		Assert.assertEquals(productCtrler.listOfProducts().toString(), expectedList.toString());
 	}
 
 
+	/*
+	 *  Unit Tests
+	 */
 	@Test
 	public void getOneProductTest(){
 		// Preparing expected list
-		Product chair = new Product(1,"Chair to sit down", "Rare chair with 4 chair legs", "file:///images/chair.jpg", 95.0);
+		Product chair = new Product(1,"Chair to sit down", "Rare chair with 4 chair legs", "https://live.staticflickr.com/1012/819236264_dc25b04576_z.jpg", 95.0);
 		List<Product> expectedList = new ArrayList();
 		expectedList.add(chair);
 
@@ -53,5 +51,12 @@ public class MproductsApplicationTests {
 		Optional<Product> prdct = productCtrler.getOneProduct(1);
 		Assert.assertEquals(prdct.get().toString(), chair.toString());
 	}
+
+	@Test(expected = ProductNotFoundException.class)
+	public void getOneProductFailTest(){
+		// Testing get one product method to fail
+		productCtrler.getOneProduct(10);
+	}
+
 
 }
