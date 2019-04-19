@@ -39,7 +39,7 @@ public class PaymentControllerUnitTests {
 		controller = new PaymentController(microserviceOrderProxy, paymentDao);
 
 		// We mock the saving of the order
-//		Mockito.when(paymentDao.save(payment)).thenReturn(payment);
+		Mockito.when(paymentDao.save(payment)).thenReturn(payment);
 		// We mock the call to orders microservice to update the payment status of the order
 		Mockito.when(microserviceOrderProxy.retrieveOneOrder(payment.getIdOrder())).thenReturn(Optional.of(orderBean));
 	}
