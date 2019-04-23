@@ -1,0 +1,39 @@
+{
+    "provider": {
+        "name": "microservice-orders"
+    },
+    "consumer": {
+        "name": "microservice-payment"
+    },
+    "interactions": [
+        {
+            "description": "GET REQUEST",
+            "request": {
+                "method": "GET",
+                "path": "/orders"
+            },
+            "response": {
+                "status": 200,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": [
+                    
+                ]
+            },
+            "providerStates": [
+                {
+                    "name": "test GET /orders"
+                }
+            ]
+        }
+    ],
+    "metadata": {
+        "pact-specification": {
+            "version": "3.0.0"
+        },
+        "pact-jvm": {
+            "version": "3.5.0"
+        }
+    }
+}

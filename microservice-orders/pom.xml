@@ -49,9 +49,17 @@
 			<artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
 		</dependency>
 
+		<!-- Test dependencies -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>au.com.dius</groupId>
+			<artifactId>pact-jvm-provider-junit_2.11</artifactId>
+			<version>3.5.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
