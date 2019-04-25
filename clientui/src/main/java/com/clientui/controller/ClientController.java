@@ -122,7 +122,7 @@ public class ClientController {
 
         model.addAttribute("idOrder", idOrder);
 
-        return "confirmation";
+        return "Confirmation";
     }
 
 

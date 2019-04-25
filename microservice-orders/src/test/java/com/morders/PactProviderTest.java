@@ -17,7 +17,7 @@ import org.springframework.web.context.ConfigurableWebApplicationContext;
 @PactFolder("pacts")
 public class PactProviderTest {
     @TestTarget
-    public final Target target = new HttpTarget("http", "localhost", 9002, "/");
+    public final Target target = new HttpTarget("http", "10.126.226.2", 9002, "/");
 
     private static ConfigurableWebApplicationContext application;
 

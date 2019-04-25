@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.Optional;
 
-@FeignClient(name = "microservice-orders", url = "localhost:9002")
+@FeignClient(name = "microservice-orders", url = "10.126.226.2:9002")
 public interface MicroserviceOrderProxy {
 
     @GetMapping(value = "/orders/{id}")

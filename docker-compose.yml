@@ -30,8 +30,6 @@ services:
             - microservice-network
         depends_on:
             - eureka-server
-        links:
-            - eureka-server:eureka-server
 
     microserviceorders:
         image: microservice-orders
@@ -46,8 +44,6 @@ services:
             - microservice-network
         depends_on:
             - eureka-server
-        links:
-            - eureka-server:eureka-server
 
     microservicepayment:
         image: microservice-payment
@@ -62,8 +58,6 @@ services:
             - microservice-network
         depends_on:
             - eureka-server
-        links:
-            - eureka-server:eureka-server
 
     zuul:
         image: zuul-server
@@ -78,8 +72,6 @@ services:
             - microservice-network
         depends_on:
             - eureka-server
-        links:
-            - eureka-server:eureka-server
 
     clientui:
         image: clientui
@@ -95,6 +87,3 @@ services:
         depends_on:
             - eureka-server
             - zuul
-        links:
-            - eureka-server:eureka-server
-            - zuul:zuul
