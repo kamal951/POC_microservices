@@ -19,7 +19,7 @@ public class MpaymentContractTest {
 
     @Rule
     public PactProviderRuleMk2 mockProvider
-            = new PactProviderRuleMk2("microservice-orders", "10.126.226.2", 9002, this);
+            = new PactProviderRuleMk2("microservice-orders", "localhost", 9002, this);
 
     @Pact(consumer = "microservice-payment")
     public RequestResponsePact createPact(PactDslWithProvider builder) {
