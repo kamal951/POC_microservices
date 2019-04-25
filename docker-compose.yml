@@ -1,0 +1,100 @@
+version: '2.1'
+
+networks:
+    microservice-network:
+        driver: bridge
+
+services:
+    eureka-server:
+        image: eureka-server
+        build:
+            context: ./eureka-server/
+            dockerfile: Dockerfile
+        expose:
+            - 9102
+        ports:
+            - 9102:9102
+        networks:
+            - microservice-network
+
+    microserviceproducts:
+        image: microservice-products
+        build:
+            context: ./microservice-products/
+            dockerfile: Dockerfile
+        expose:
+            - 9005
+        ports:
+            - 9005:9005
+        networks:
+            - microservice-network
+        depends_on:
+            - eureka-server
+        links:
+            - eureka-server:eureka-server
+
+    microserviceorders:
+        image: microservice-orders
+        build:
+            context: ./microservice-orders/
+            dockerfile: Dockerfile
+        expose:
+            - 9002
+        ports:
+            - 9002:9002
+        networks:
+            - microservice-network
+        depends_on:
+            - eureka-server
+        links:
+            - eureka-server:eureka-server
+
+    microservicepayment:
+        image: microservice-payment
+        build:
+            context: ./microservice-payment/
+            dockerfile: Dockerfile
+        expose:
+            - 9003
+        ports:
+            - 9003:9003
+        networks:
+            - microservice-network
+        depends_on:
+            - eureka-server
+        links:
+            - eureka-server:eureka-server
+
+    zuul:
+        image: zuul-server
+        build:
+            context: ./zuul-server/
+            dockerfile: Dockerfile
+        expose:
+            - 9004
+        ports:
+            - 9004:9004
+        networks:
+            - microservice-network
+        depends_on:
+            - eureka-server
+        links:
+            - eureka-server:eureka-server
+
+    clientui:
+        image: clientui
+        build:
+            context: ./clientui/
+            dockerfile: Dockerfile
+        expose:
+            - 80
+        ports:
+            - 80:80
+        networks:
+            - microservice-network
+        depends_on:
+            - eureka-server
+            - zuul
+        links:
+            - eureka-server:eureka-server
+            - zuul:zuul
