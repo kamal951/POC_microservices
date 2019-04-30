@@ -1,0 +1,92 @@
+{
+  "id": "01d40d77-0096-4e6b-b91c-c223d7a480cd",
+  "version": "2.0",
+  "name": "test end to end microservices",
+  "url": "http://10.126.226.2",
+  "tests": [{
+    "id": "a67f736c-e7ad-4ab0-af71-9baedbb465b3",
+    "name": "test end-to-end",
+    "commands": [{
+      "id": "28135c7b-3618-483d-98b6-f0e1da223378",
+      "comment": "",
+      "command": "open",
+      "target": "/",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "b4e24226-b49d-4197-97af-f121cdeb9d5a",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "960x1040",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "615d32c3-4ca8-421a-bac9-187e5fbe7c01",
+      "comment": "",
+      "command": "click",
+      "target": "css=.col-md-4:nth-child(1) .card-img-top",
+      "targets": [
+        ["css=.col-md-4:nth-child(1) .card-img-top", "css:finder"],
+        ["xpath=//img[contains(@src,'https://live.staticflickr.com/3408/3279558099_6dc30be4b6_b.jpg')]", "xpath:img"],
+        ["xpath=//img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "3b292624-1a8d-4736-ab46-25aed56c7f72",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=ORDER",
+      "targets": [
+        ["linkText=ORDER", "linkText"],
+        ["css=.font-weight-bold:nth-child(1)", "css:finder"],
+        ["xpath=//a[contains(text(),'ORDER')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/order-product/0/22.0')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'ORDER')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "41034298-846c-4c8d-867b-61c84e08f45e",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Pay My Order",
+      "targets": [
+        ["linkText=Pay My Order", "linkText"],
+        ["css=.font-weight-bold", "css:finder"],
+        ["xpath=//a[contains(text(),'Pay My Order')]", "xpath:link"],
+        ["xpath=//a[contains(@href, '/pay-order/6/22.0')]", "xpath:href"],
+        ["xpath=//a", "xpath:position"],
+        ["xpath=//a[contains(.,'Pay My Order')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4f9d2e4d-d94f-44db-991c-670bc4569e7e",
+      "comment": "",
+      "command": "assertText",
+      "target": "css=p",
+      "targets": [
+        ["css=p", "css:finder"],
+        ["xpath=//p", "xpath:position"],
+        ["xpath=//p[contains(.,'Payment accepted!')]", "xpath:innerText"]
+      ],
+      "value": "Payment accepted!"
+    }, {
+      "id": "cb291906-109c-461e-adab-2af6f57bb22b",
+      "comment": "",
+      "command": "close",
+      "target": "",
+      "targets": [],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "f2da8f74-4f0a-441b-8e38-63b523464baa",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["http://localhost/", "http://10.126.226.2/"],
+  "plugins": []
+}
